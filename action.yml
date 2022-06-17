@@ -34,5 +34,11 @@ runs:
     - name: Creating Commit
       env:
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
+        URL: ${{inputs.URL}}
+        GITHUB_REPO: ${{inputs.GITHUB_REPO}}
+        GITHUB_OWNER: ${{inputs.GITHUB_OWNER}}
+        GITHUB_BRANCH: ${{inputs.GITHUB_BRANCH}}
+        PDF_NAME: ${{inputs.PDF_NAME}}
+        DOM_SELECTOR: ${{inputs.DOM_SELECTOR}}
       run: node ${{ github.action_path }}/src/action.js
       shell: bash
