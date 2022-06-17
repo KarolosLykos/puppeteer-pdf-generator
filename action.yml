@@ -1,0 +1,38 @@
+name: "Puppeteer PDF generator Action"
+description: "Generate PDF of a webpage using puppeteer."
+author: "Karolos Lykos"
+branding:
+  icon: "box"
+  color: "green"
+
+inputs:
+  URL:
+    description: "Website url"
+    required: true
+  GITHUB_TOKEN:
+    description: "GitHub token"
+    required: true
+  GITHUB_REPO:
+    description: "GitHub repository to upload the pdf"
+    required: true
+  GITHUB_OWNER:
+    description: "GitHub repository owner"
+    required: true
+  GITHUB_BRANCH:
+    description: "GitHub branch"
+    required: true
+  PDF_NAME:
+    description: "PDF name"
+    required: true
+  DOM_SELECTOR:
+    description: "Dom selector"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Creating Commit
+      env:
+        GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
+      run: node ${{ github.action_path }}/src/action.js
+      shell: bash
