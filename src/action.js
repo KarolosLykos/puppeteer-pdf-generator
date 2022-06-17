@@ -12,9 +12,18 @@ const getFileSha = async (octokit, pdfPath, owner, repo, branch = "main") => {
 };
 
 const getPdfBase64 = async () => {
-  const browser = await puppeteer.launch({ headless: true });
+  const URL = process.env.URL
+
+  const browserFetcher = puppeteer.createBrowserFetcher();
+  let revisionInfo = await browserFetcher.download("884014");
+
+  browser = await puppeteer.launch({
+    executablePath: revisionInfo.executablePath,
+    args: ["--no-sandbox", "--disabled-setupid-sandbox"],
+  });
+
   const page = await browser.newPage();
-  await page.goto('https://blog.risingstack.com', {waitUntil: 'networkidle0'});
+  await page.goto(URL, {waitUntil: 'networkidle0'});
   const pdf = await page.pdf({ format: 'a4' });
 
   await browser.close();
