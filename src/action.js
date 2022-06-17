@@ -19,7 +19,8 @@ const getPdfBase64 = async () => {
 
   browser = await puppeteer.launch({
     executablePath: revisionInfo.executablePath,
-    args: ["--no-sandbox", "--disabled-setupid-sandbox"],
+    args: ["--window-size=1920,1080", "--no-sandbox", "--disabled-setupid-sandbox"],
+    defaultViewport: null
   });
 
   const page = await browser.newPage();
