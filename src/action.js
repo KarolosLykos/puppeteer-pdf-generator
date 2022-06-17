@@ -12,34 +12,14 @@ const getFileSha = async (octokit, pdfPath, owner, repo, branch = "main") => {
 };
 
 const getPdfBase64 = async () => {
-  const URL = process.env.URL
-  const domSelector = process.env.DOM_SELECTOR;
-  const browserFetcher = puppeteer.createBrowserFetcher();
-  let revisionInfo = await browserFetcher.download("884014");
-
-  browser = await puppeteer.launch({
-    executablePath: revisionInfo.executablePath,
-    args: ["--no-sandbox", "--disabled-setupid-sandbox"],
-  });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
-  await page.goto(URL, { waitUntil: "networkidle2" });
-  const desiredHtml = await page.$eval(domSelector, (element) => {
-    return element.innerHTML;
-  });
+  await page.goto('https://blog.risingstack.com', {waitUntil: 'networkidle0'});
+  const pdf = await page.pdf({ format: 'a4' });
 
-  await page.setContent(desiredHtml, { waitUntil: "networkidle2" });
-  await page.evaluateHandle("document.fonts.ready");
-
-  // create a pdf buffer with my preffered settings
-  const pdfBuffer = await page.pdf({
-    format: "A4",
-    landscape: false,
-    pageRanges: "1",
-    printBackground: true,
-    margin: "none",
-  });
   await browser.close();
-  return pdfBuffer.toString("base64");
+
+  return pdf.toString("base64");
 };
 
 const getDateTime = () => {
@@ -63,7 +43,7 @@ const uploadToRepo = async (
   pdfBase64,
   owner,
   repo,
-  branch = `main`
+  branch
 ) => {
   const fileSha = await getFileSha(octokit, pdfPath, owner, repo, branch);
   const datetime = getDateTime();
