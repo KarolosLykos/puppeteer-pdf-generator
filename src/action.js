@@ -25,7 +25,9 @@ const getPdfBase64 = async () => {
 
   const page = await browser.newPage();
   await page.goto(URL, {waitUntil: 'networkidle0'});
-  const pdf = await page.pdf({ format: 'a4' });
+  await page.setViewport({ width: 1024, height: 1000})
+
+  const pdf = await page.pdf();
 
   await browser.close();
 
