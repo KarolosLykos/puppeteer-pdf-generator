@@ -24,9 +24,6 @@ inputs:
   PDF_NAME:
     description: "PDF name"
     required: true
-  DOM_SELECTOR:
-    description: "Dom selector"
-    required: true
 
 runs:
   using: "composite"
@@ -39,6 +36,5 @@ runs:
         GITHUB_OWNER: ${{inputs.GITHUB_OWNER}}
         GITHUB_BRANCH: ${{inputs.GITHUB_BRANCH}}
         PDF_NAME: ${{inputs.PDF_NAME}}
-        DOM_SELECTOR: ${{inputs.DOM_SELECTOR}}
       run: node ${{ github.action_path }}/src/action.js
       shell: bash
